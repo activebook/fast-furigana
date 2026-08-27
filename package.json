@@ -1,6 +1,6 @@
 {
   "name": "fast-furigana",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Ultra-fast, lightweight Japanese furigana injector for Google Chrome.",
   "license": "MIT",
   "scripts": {
