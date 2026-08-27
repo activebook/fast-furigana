@@ -117,8 +117,7 @@ function isNodeEligible(node: Node | null): node is Text {
     // 3. W3C translation opt-out directives and icon font classes
     if (
       parent.getAttribute("translate") === "no" ||
-      parent.classList?.contains("notranslate") ||
-      parent.getAttribute("aria-hidden") === "true"
+      parent.classList?.contains("notranslate")
     ) {
       return false;
     }
@@ -272,6 +271,12 @@ function observeMutations(): void {
             }
           }
         }
+      } else if (mutation.type === "attributes") {
+        const el = mutation.target as Element;
+        if (el && el.nodeType === Node.ELEMENT_NODE && !IGNORED_TAGS.has(el.nodeName) && !processedElements.has(el)) {
+          pendingMutationNodes.add(el);
+          hasNewNodes = true;
+        }
       }
     }
 
@@ -282,7 +287,9 @@ function observeMutations(): void {
 
   mutationObserver.observe(document.body || document.documentElement, {
     childList: true,
-    subtree: true
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["aria-hidden", "hidden", "class", "style", "open"]
   });
 }
 
