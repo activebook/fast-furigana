@@ -68,12 +68,6 @@ jobs:
           echo "tag_name=v${NEW_VERSION}" >> $GITHUB_OUTPUT
           echo "Release Version: ${NEW_VERSION}"
 
-      - name: Commit and push updated version
-        run: |
-          git add package.json manifest.json
-          git commit -m "chore(release): bump version to v${{ steps.bump.outputs.version }} [skip ci]"
-          git push origin HEAD:${{ github.ref_name }}
-
       - name: Create and push release tag
         run: |
           git tag "${{ steps.bump.outputs.tag_name }}"
