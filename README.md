@@ -23,7 +23,7 @@
 
 ## Installation
 
-1. Download the latest `fast-furigana-vX.Y.Z.zip` from [Releases](https://github.com/).
+1. Download the latest `fast-furigana-vX.Y.Z.zip` from [Releases](https://github.com/activebook/fast-furigana/releases).
 2. Unzip the archive to a local folder.
 3. Open Chrome and navigate to `chrome://extensions/`.
 4. Turn on **Developer mode** in the top-right corner.
