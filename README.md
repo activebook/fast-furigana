@@ -8,6 +8,12 @@
   <b>Ultra-fast, lightweight Japanese Furigana injector for Google Chrome.</b>
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Chrome-Manifest%20V3-blue" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/TypeScript-5.x-3178c6" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
+</p>
+
 <div align="center">
 
 | Google Search | Yahoo! JAPAN |
@@ -39,6 +45,10 @@ npm install        # Install dependencies
 npm run build      # Compile extension bundle (dist/)
 npm run package    # Package release zip
 ```
+
+## Acknowledgments
+
+Special thanks to [kuromoji.js](https://github.com/atilika/kuromoji) by Atilika Inc. for the foundational JavaScript Japanese morphological analyzer and dictionary parsing implementation.
 
 ## License
 
