@@ -8,18 +8,21 @@
   <b>Ultra-fast, lightweight Japanese Furigana injector for Google Chrome.</b>
 </p>
 
-<p align="center">
-  <img src="./screenshot-google.png" alt="Google Search Snapshot" width="49%" />
-  <img src="./screenshot-yahoo.png" alt="Yahoo Japan Snapshot" width="49%" />
-</p>
+<div align="center">
+
+| Google Search | Yahoo! JAPAN |
+| :---: | :---: |
+| <img src="./screenshot-google.png" alt="Google Search Snapshot" width="100%" /> | <img src="./screenshot-yahoo.png" alt="Yahoo Japan Snapshot" width="100%" /> |
+
+</div>
 
 ## Highlights
 
-- **Blazingly Fast**: Real-time Japanese morphological parsing with zero-latency in-memory caching.
+- **Blazingly Fast**: Instant Japanese Kanji reading generation with zero-latency in-memory caching.
 - **Instant Toggle (`Alt+F`)**: Toggle between Furigana and original text with one click or `Alt+F` (`Option+F` on macOS).
 - **Smart Filtering**: Automatically detects Japanese pages and strictly excludes Chinese/Korean websites.
 - **Rich Markup Support**: Seamlessly preserves readings on Google Search highlights (`<em>`), links, and styled text.
-- **100% Offline & Private**: All morphological processing runs locally on-device. Zero network requests or tracking.
+- **100% Offline & Private**: All Japanese text processing runs locally on your device. Zero network requests or tracking.
 
 ## Installation
 
