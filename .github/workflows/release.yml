@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type (patch, minor, major) or explicit version (e.g. 1.2.0)"
+        required: false
+        default: "patch"
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Bump Version, Tag & Publish Release
+    runs-on: ubuntu-latest
+    # Prevent recursion when the action itself commits back to main
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !startsWith(github.event.head_commit.message, 'chore(release):')"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript typecheck
+        run: npm run typecheck
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine & bump version
+        id: bump
+        run: |
+          if [ -n "${{ github.event.inputs.bump }}" ]; then
+            BUMP_ARG="${{ github.event.inputs.bump }}"
+          else
+            COMMIT_MSG="${{ github.event.head_commit.message }}"
+            BUMP_ARG="patch"
+            if echo "$COMMIT_MSG" | grep -qiE "breaking|major|BREAKING CHANGE"; then
+              BUMP_ARG="major"
+            elif echo "$COMMIT_MSG" | grep -qiE "^feat(\(.*\))?:|minor"; then
+              BUMP_ARG="minor"
+            fi
+          fi
+
+          echo "Determined bump argument: $BUMP_ARG"
+          NEW_VERSION=$(node scripts/version.js "$BUMP_ARG")
+          echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+          echo "tag_name=v${NEW_VERSION}" >> $GITHUB_OUTPUT
+          echo "Release Version: ${NEW_VERSION}"
+
+      - name: Commit and push updated version
+        run: |
+          git add package.json manifest.json
+          git commit -m "chore(release): bump version to v${{ steps.bump.outputs.version }} [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Create and push release tag
+        run: |
+          git tag "${{ steps.bump.outputs.tag_name }}"
+          git push origin "${{ steps.bump.outputs.tag_name }}"
+
+      - name: Package Minimal Extension ZIP
+        run: |
+          node scripts/package.js --version "${{ steps.bump.outputs.version }}"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.bump.outputs.tag_name }}
+          name: Fast Furigana v${{ steps.bump.outputs.version }}
+          files: release/fast-furigana-v${{ steps.bump.outputs.version }}.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

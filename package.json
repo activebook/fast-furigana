@@ -1,0 +1,22 @@
+{
+  "name": "fast-furigana",
+  "version": "1.2.0",
+  "description": "Ultra-fast, lightweight Japanese furigana injector for Google Chrome.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node scripts/build.js --watch",
+    "build": "node scripts/build.js",
+    "typecheck": "tsc --noEmit",
+    "package": "node scripts/package.js"
+  },
+  "dependencies": {
+    "kuroshiro": "^1.2.0",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
+    "url-join": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.308",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.3"
+  }
+}
